@@ -10,7 +10,7 @@ import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [postData, setPostData] = useState({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
+  const [postData, setPostData] = useState({ audio_origin: '', location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   //if we try to update the post, make sure teh updated post information will be shown in the input filed, so we can change from the old materials
   const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const clear = () => {
     setCurrentId(0);
-    setPostData({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
+    setPostData({ audio_origin: '', location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   };
 
   const handleSubmit = async (e) => {
@@ -46,25 +46,25 @@ const Form = ({ currentId, setCurrentId }) => {
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? `Modifying "${post.title}" Recording` : 'Upload a Recording'}</Typography>
         <TextField 
-          name="creator" 
+          name="audio_origin" 
           variant="outlined" 
-          label="Creator" 
+          label="Audio Origin" 
           fullWidth 
-          value={postData.creator} 
-          onChange={(e) => setPostData({ ...postData, creator: e.target.value })} 
+          value={postData.audio_origin} 
+          onChange={(e) => setPostData({ ...postData, audio_origin: e.target.value })} 
         />
         <TextField 
-          name="title" 
+          name="location" 
           variant="outlined" 
-          label="Title" 
+          label="location" 
           fullWidth 
-          value={postData.title} 
-          onChange={(e) => setPostData({ ...postData, title: e.target.value })} 
+          value={postData.location} 
+          onChange={(e) => setPostData({ ...postData, location: e.target.value })} 
         />
         <TextField 
           name="message" 
           variant="outlined" 
-          label="Message" 
+          label="Additional Information" 
           fullWidth 
           multiline 
           rows={4} 
@@ -72,11 +72,25 @@ const Form = ({ currentId, setCurrentId }) => {
           onChange={(e) => setPostData({ ...postData, message: e.target.value })}
         />
         <TextField 
-          name="tags" 
+          name="environment" 
           variant="outlined" 
-          label="Tags (coma separated)" 
-          fullWidth value={postData.tags} 
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} 
+          label="Environment (indoor/outdoor)" 
+          fullWidth value={postData.environment} 
+          onChange={(e) => setPostData({ ...postData, environment: e.target.value.split(',') })} 
+        />
+        <TextField 
+          name="phone_type" 
+          variant="outlined" 
+          label="Phone type" 
+          fullWidth value={postData.phone_type} 
+          onChange={(e) => setPostData({ ...postData, phone_type: e.target.value })} 
+        />
+        <TextField 
+          name="decibel" 
+          variant="outlined" 
+          label="Decibel Value" 
+          fullWidth value={postData.decibel} 
+          onChange={(e) => setPostData({ ...postData, decibel: e.target.value })} 
         />
         <div className={classes.fileInput}>
             <FileBase 

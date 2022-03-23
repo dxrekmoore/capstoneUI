@@ -21,9 +21,9 @@ export const getPosts = async (req, res) => {
 
 //implmenet logic for adding different posts 
 export const createPost = async (req, res) => {
-    const { title, message, selectedFile, creator, tags } = req.body;
+    const { audio_origin, location, message, environment, phone_type, decibel , selectedFile} = req.body;
 
-    const newPostMessage = new PostMessage({ title, message, selectedFile, creator, tags })
+    const newPostMessage = new PostMessage({ audio_origin, location, message, environment, phone_type, decibel , selectedFile})
 
     try {
         await newPostMessage.save();
@@ -36,13 +36,13 @@ export const createPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
     const { id } = req.params;//the id will be filled once the request is sent 
-    const { title, message, creator, selectedFile, tags } = req.body;
+    const { audio_origin, location, message, environment, phone_type, decibel , selectedFile} = req.body;
 
     //check if id is valid
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
     
     //if the id is valid, we can update the post
-    const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+    const updatedPost = { audio_origin, location, message, environment, phone_type, decibel , selectedFile, _id: id };
 
     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
     res.json(updatedPost);   
