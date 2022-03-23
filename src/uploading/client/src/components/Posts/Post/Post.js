@@ -27,7 +27,7 @@ const Post = ({ post, setCurrentId}) => {
       <div className={classes.overlay}>
         <Typography 
           variant="h6">
-          {post.creator}
+          {post.audio_origin}
         </Typography>
         <Typography 
           variant="body2">
@@ -48,18 +48,40 @@ const Post = ({ post, setCurrentId}) => {
           variant="body2" 
           color="textSecondary" 
           component="h2">
-          {post.tags.map((tag) => `#${tag} `)}
+          {post.environment.map((tag) => `#${tag} `)}
         </Typography>
       </div>
       
-      <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.title}</Typography>
+      <Typography 
+        className={classes.location} 
+        gutterBottom variant="h9" 
+        component="h4">
+        location:
+        { post.location }
+      </Typography>
       <CardContent>
         <Typography 
           variant="body2" 
           color="textSecondary" 
-          component="p">{post.message}
+          component="p">
+          message:
+          {post.message}
         </Typography>
       </CardContent>
+      <Typography 
+        className={classes.phone_type} 
+        gutterBottom variant="body2" 
+        component="p">
+        phone type:
+        {post.phone_type}
+      </Typography>
+      <Typography 
+        className={classes.decibel} 
+        gutterBottom variant="body2" 
+        component="p">
+        decibel:
+        {post.decibel}
+      </Typography>
       
       <CardActions className={classes.cardActions}>
         <Button 

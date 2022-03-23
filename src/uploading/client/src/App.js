@@ -12,7 +12,6 @@ import Form from './components/Form/Form';
 import { getPosts } from './actions/posts';
 
 //this is the logo picture filed 
-import newPic from './images/newPic.jpeg';
 import useStyles  from './styles'
 
 const App = () => {
@@ -27,8 +26,7 @@ const App = () => {
     return(
         <Container maxWidth="lg">
             <AppBar className={classes.appBar} position='static' color='inherit'>
-                <Typography className={classes.heading} variant='h2' align="center"> Soundmap</Typography>
-                <img className={classes.image} src={newPic} alt="newPic" height="60" width="60"/>
+
             </AppBar>
             <Grow in>
         <Container>
