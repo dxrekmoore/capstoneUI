@@ -1,49 +1,72 @@
-import React from 'react'
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory, useLocation  } from 'react-router-dom';
+import { Typography, Button } from '@material-ui/core';
 
-import Home from '../pages/home';
-import Uploading from '../uploading/client/src/App';
+import { useDispatch } from 'react-redux';
+import decode from 'jwt-decode';
 
-function NavBar(){
-  return (
-    <BrowserRouter>
-        <nav className="navbar">
-        <div class="logo">SoundScape Mapper</div>
-          
-          <ul class="nav-links">
-            <input type="checkbox" id="checkbox_toggle" />
-            <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+import useStyles from './styles';
+
+const NavBar = () =>{
+  const classes = useStyles();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  
+  const logout = () => {
+    dispatch({ type: 'LOGOUT' });
+    history.push('/');
+    setUser(null);
+  };
+
+  console.log(user);
+
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
     
-            <div class="menu">
+    setUser(JSON.parse(localStorage.getItem('profile')));
+  }, [location]);
+
+  return (
+    <div>
+      <nav className="navbar">
+        <div class="logo">SoundScape Mapper</div>
+        <ul class="nav-links">
+          <input type="checkbox" id="checkbox_toggle" />
+          <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+          <div class="menu">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/upload">Upload</Link></li>
-      
-            <li class="services">
-              <a href="/">Services</a>
-              <ul class="dropdown">
-                <li><a href="/">Dropdown 1</a></li>
-                <li><a href="/">Dropdown 2</a></li>
-                <li><a href="/">Dropdown 2</a></li>
-                <li><a href="/">Dropdown 3</a></li>
-                <li><a href="/">Dropdown 4</a></li>
-              </ul>
-            </li>
             <li><Link to="/home">Contact Us</Link></li>
+            <div >
+              {user?.result ? (
+                <div className={classes.profile}>
+                  
+                  <Typography className={classes.userName} variant="h9">{user?.result.name}</Typography>
+                  <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
+                </div>
+              ) : (
+                <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
+              )}
+      </div>
           </div>
+          
         </ul>
+        
+        
+          
       </nav>
 
-      <Switch>
-        <Route path="/home">
-          <Home />
-        </Route>
-        <Route path="/upload">
-          <Uploading />
-        </Route>
-      </Switch>
-    </BrowserRouter>   
+    </div>   
   );
-}
+};
 
 export default NavBar;
         

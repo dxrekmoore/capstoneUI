@@ -21,10 +21,12 @@ export const getPosts = async (req, res) => {
 
 //implmenet logic for adding different posts 
 export const createPost = async (req, res) => {
-    const { audio_origin, location, message, environment, phone_type, decibel , selectedFile} = req.body;
+    //const { audio_origin, location, message, environment, phone_type, decibel , selectedFile} = req.body;
 
-    const newPostMessage = new PostMessage({ audio_origin, location, message, environment, phone_type, decibel , selectedFile})
+    //const newPostMessage = new PostMessage({ audio_origin, location, message, environment, phone_type, decibel , selectedFile})
 
+    const post = req.body;
+    const newPostMessage = new PostMessage({ ...post, audio_origin: req.userId, createdAt: new Date().toISOString()})
     try {
         await newPostMessage.save();
 
@@ -76,13 +78,26 @@ export const getPost = async (req, res) => {
 export const likePost = async (req, res) => {
     const { id } = req.params;
 
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated" });
+      }
+
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
     
     const post = await PostMessage.findById(id);
 
-    const updatedPost = await PostMessage.findByIdAndUpdate(id, { likeCount: post.likeCount + 1 }, { new: true });
+    //check if teh users' like is already inside the like list 
+    const index = post.likes.findIndex((id) => id ===String(req.userId));
     
-    res.json(updatedPost);
+    if (index === -1) {//like the post 
+        post.likes.push(req.userId);
+      } else {//dislike the post 
+        post.likes = post.likes.filter((id) => id !== String(req.userId));
+      }
+
+      const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    
+    res.status(200).json(updatedPost);
 }
 /*
 

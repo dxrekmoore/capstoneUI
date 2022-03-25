@@ -4,16 +4,16 @@ import mongoose from 'mongoose';
 //we can specify each posts have to have these things to be posted into mongoose
 const postSchema = mongoose.Schema({
     audio_origin: String,
+    name: String,
     location: String,
     message: String,
-    creator: String,
     environment: [String], //array of strings
     phone_type: String,
-    decibel: Number,
+    decibel: String,
     selectedFile: String, //convert uploaded, pictures, etc, into string 
-    likeCount: {
-        type: Number,
-        default: 0,
+    likes: {
+        type: [String],
+        default: [],
     },
     createdAt: {
         type: Date,

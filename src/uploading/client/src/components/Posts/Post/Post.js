@@ -17,6 +17,7 @@ import useStyles from './styles';
 const Post = ({ post, setCurrentId}) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const user = JSON.parse(localStorage.getItem('profile'));
 
   //the card are each of the displayed form 
   //changing on the forms should change this filed  
@@ -92,6 +93,7 @@ const Post = ({ post, setCurrentId}) => {
           Like {post.likeCount} 
         </Button>
 
+        {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
         <Button 
           size="small" 
           color="primary" 
@@ -99,6 +101,7 @@ const Post = ({ post, setCurrentId}) => {
           <DeleteIcon fontSize="small" /> 
           Delete
         </Button>
+        )}
       </CardActions>
     </Card>
   );

@@ -8,23 +8,17 @@ import express from 'express';
 /*import { getPosts, getPost, createPost, updatePost, likePost, deletePost } from '../controllers/posts.js';
 */ 
 import { getPosts,createPost,updatePost,deletePost,likePost,getPost } from '../controllers/posts.js';
-
+import auth from "../middleware/auth.js";
 // setup router 
 const router = express.Router();
 
-//the first paramter is the path, the second para is the action to be omplemented when someone is in the path 
-router.get('/', getPosts)// http://localhost:5000/posts
+//the first paramter is the path, the third para is the action to be omplemented when someone is in the path 
+//the second parameter decide if the user has the authorization to do the operations 
+router.get('/', auth, getPosts)// http://localhost:5000/posts
 router.post('/', createPost);
-router.get('/:id', getPost);
-router.patch('/:id', updatePost);
-router.delete('/:id', deletePost);
-router.patch('/:id/likePost', likePost);
+router.patch('/:id', auth, updatePost);//frontend 
+router.delete('/:id', auth, deletePost);//frontend 
+router.patch('/:id/likePost',auth, likePost);//backend -- in controller/posts
 
-/*
-router.get('/', getPosts); //PATH: localhost:5000/
-router.post('/', createPost);
-router.get('/:id', getPost);
-router.patch('/:id', updatePost);
-*/
 
 export default router;
