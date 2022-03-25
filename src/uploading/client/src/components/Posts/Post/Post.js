@@ -19,16 +19,19 @@ const Post = ({ post, setCurrentId}) => {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
 
+
+  
   //the card are each of the displayed form 
   //changing on the forms should change this filed  
   return (
+    
     <Card className={classes.card}>
+    
       <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
-      
       <div className={classes.overlay}>
         <Typography 
           variant="h6">
-          {post.audio_origin}
+          {post.name}
         </Typography>
         <Typography 
           variant="body2">
@@ -36,13 +39,13 @@ const Post = ({ post, setCurrentId}) => {
         </Typography>
       </div>
       
+      {(user?.result?.googleId === post?.audio_origin || user?.result?._id === post?.audio_origin) && (
       <div className={classes.overlay2}>
-        <Button 
-          style={{ color: 'white' }} 
-          size="small" onClick={() => {setCurrentId(post._id)}}>
+        <Button onClick={() => setCurrentId(post._id)} style={{ color: 'white' }} size="small">
           <MoreHorizIcon fontSize="default" />
         </Button>
       </div>
+      )}
       
       <div className={classes.details}>
         <Typography 
@@ -93,18 +96,16 @@ const Post = ({ post, setCurrentId}) => {
           Like {post.likeCount} 
         </Button>
 
-        {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
-        <Button 
-          size="small" 
-          color="primary" 
-          onClick={() => dispatch(deletePost(post._id))}>
-          <DeleteIcon fontSize="small" /> 
-          Delete
-        </Button>
+        {(user?.result?.googleId === post?.audio_origin || user?.result?._id === post?.audio_origin) && (
+          <Button size="small" color="secondary"  onClick={() => dispatch(deletePost(post._id))}>
+            <DeleteIcon fontSize="small" /> Delete
+          </Button>
         )}
       </CardActions>
     </Card>
+    
   );
 };
+
 
 export default Post;

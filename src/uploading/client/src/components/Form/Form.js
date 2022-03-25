@@ -10,7 +10,7 @@ import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [postData, setPostData] = useState({ audio_origin: '', location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
+  const [postData, setPostData] = useState({ location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   //if we try to update the post, make sure teh updated post information will be shown in the input filed, so we can change from the old materials
   const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const clear = () => {
     setCurrentId(0);
-    setPostData({ audio_origin: '', location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
+    setPostData({ location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   };
 
   const handleSubmit = async (e) => {
@@ -34,10 +34,10 @@ const Form = ({ currentId, setCurrentId }) => {
     //if current Id is not null, then dispatch a update post 
     //otherwise if id is null, then we must be creating a post
     if (currentId === 0) {
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
       clear();
     } else {
-      dispatch(updatePost(currentId, postData));
+      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }
   };
@@ -57,14 +57,7 @@ const Form = ({ currentId, setCurrentId }) => {
     <Paper className={classes.paper}>
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? `Modifying "${post.title}" Recording` : 'Upload a Recording'}</Typography>
-        <TextField 
-          name="audio_origin" 
-          variant="outlined" 
-          label="Audio Origin" 
-          fullWidth 
-          value={postData.audio_origin} 
-          onChange={(e) => setPostData({ ...postData, audio_origin: e.target.value })} 
-        />
+        
         <TextField 
           name="location" 
           variant="outlined" 
