@@ -1,0 +1,78 @@
+{
+    "uploads": [
+      {
+        "id": 1,
+        "address": "200 N Spring St, Los Angeles, CA 90012",
+        "longitude": -76.495,
+        "latitude": 44.23,
+        "intensity": 5
+        
+      },
+      {
+        "id": 2,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.492,
+        "latitude": 44.225,
+        "intensity": 20
+
+      },
+      {
+        "id": 3,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.493,
+        "latitude": 44.222,
+        "intensity": 100
+      },
+      {
+        "id": 4,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "intensity": 75,
+        "longitude": -76.493,
+        "latitude": 44.232
+      },
+      {
+        "id": 5,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.491,
+        "latitude": 44.233,
+        "intensity": 20
+      },
+      {
+        "id": 6,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.496,
+        "latitude": 44.233,
+        "intensity": 40
+      },
+      {
+        "id": 7,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.493,
+        "latitude": 44.232,
+        "intensity": 60
+      },
+      {
+        "id": 8,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.491,
+        "latitude": 44.231,
+        "intensity": 50
+      },
+      {
+        "id": 9,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.491,
+        "latitude": 44.229,
+        "intensity": 80
+      },
+      {
+        "id": 10,
+        "intensity": 100,
+        "address": "419 N Fairfax Ave, Los Angeles, CA 90036",
+        "longitude": -76.489,
+        "latitude": 44.24,
+        "likes": 0
+      }
+      
+    ]
+  }

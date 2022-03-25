@@ -8,19 +8,19 @@ function NavBar(){
   return (
     <BrowserRouter>
         <nav className="navbar">
-        <div class="logo">SoundScape Mapper</div>
+        <div className="logo">SoundScape Mapper</div>
           
-          <ul class="nav-links">
+          <ul className="nav-links">
             <input type="checkbox" id="checkbox_toggle" />
-            <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+            <label htmlFor="checkbox_toggle" className="hamburger">&#9776;</label>
     
-            <div class="menu">
+            <div className="menu">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/upload">Upload</Link></li>
       
-            <li class="services">
+            <li className="services">
               <a href="/">Services</a>
-              <ul class="dropdown">
+              <ul className="dropdown">
                 <li><a href="/">Dropdown 1</a></li>
                 <li><a href="/">Dropdown 2</a></li>
                 <li><a href="/">Dropdown 2</a></li>
