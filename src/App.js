@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import Basemap from './components/Basemap';
+import Basemap from './components/Map/Basemap';
 function App() {
   return (
     <>
