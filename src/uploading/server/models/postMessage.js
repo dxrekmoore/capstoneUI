@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 //we can specify each posts have to have these things to be posted into mongoose
 const postSchema = mongoose.Schema({
-    audio_origin: String,
+    creator: String,
     name: String,
     location: String,
     message: String,

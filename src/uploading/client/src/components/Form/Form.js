@@ -1,13 +1,31 @@
 /*this file is correspsonded with the form in client/App.js
 this page will set the form for the input fields
 */
-import React, { useState, useEffect } from 'react';
+import * as React from "react";
+import { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import FileBase from 'react-file-base64';
+import { Accordion, AccordionActions,AccordionDetails,AccordionSummary } from '@mui/material';
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
+import Record from '../Record/record'
+
+
+function success(pos){
+  var crd = pos.coords;
+  console.log('Your current position is:');
+  var latitude = crd.latitude;
+  var longitude = crd.longitude;
+  console.log(latitude);
+  console.log(longitude);
+}
+function error(err){
+  console.log(error);
+}
+
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({ location: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
@@ -16,7 +34,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
-  
+
 
 
   useEffect(() => {
@@ -33,7 +51,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
     //if current Id is not null, then dispatch a update post 
     //otherwise if id is null, then we must be creating a post
-    if (currentId === 0) {
+    if (currentId === null || currentId === 0) {
       dispatch(createPost({ ...postData, name: user?.result?.name }));
       clear();
     } else {
@@ -58,14 +76,36 @@ const Form = ({ currentId, setCurrentId }) => {
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? `Modifying "${post.title}" Recording` : 'Upload a Recording'}</Typography>
         
-        <TextField 
+        <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <TextField 
+          //disabled
           name="location" 
           variant="outlined" 
           label="location" 
           fullWidth 
-          value={postData.location} 
-          onChange={(e) => setPostData({ ...postData, location: e.target.value })} 
         />
+        </AccordionSummary>
+        <AccordionDetails>
+        <TextField 
+            //required
+            variant="outlined"
+            label="latitude"
+            fullWidth
+          />
+          <TextField 
+            //required
+            variant="outlined"
+            label="longtitude"
+            fullWidth
+          />
+        </AccordionDetails>
+      </Accordion>
+
         <TextField 
           name="message" 
           variant="outlined" 
@@ -80,7 +120,8 @@ const Form = ({ currentId, setCurrentId }) => {
           name="environment" 
           variant="outlined" 
           label="Environment (indoor/outdoor)" 
-          fullWidth value={postData.environment} 
+          fullWidth 
+          value={postData.environment} 
           onChange={(e) => setPostData({ ...postData, environment: e.target.value.split(',') })} 
         />
         <TextField 
@@ -97,6 +138,7 @@ const Form = ({ currentId, setCurrentId }) => {
           fullWidth value={postData.decibel} 
           onChange={(e) => setPostData({ ...postData, decibel: e.target.value })} 
         />
+        <Record/>
         <div className={classes.fileInput}>
             <FileBase 
                 type="file" 

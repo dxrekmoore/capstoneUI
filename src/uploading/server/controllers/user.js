@@ -11,18 +11,17 @@ export const signin = async (req, res) => {
 
   try {
     //find the existing users 
-    const existingUser = await UserModal.findOne({ email });
+    const oldUser = await UserModal.findOne({ email });
     //check if user exists 
-    if (!existingUser) return res.status(404).json({ message: "User doesn't exist" });
+    if (!oldUser) return res.status(404).json({ message: "User doesn't exist" });
     //check if password is correct -- not string compare, the password the hashed 
-    const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
+    const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
     //if the password is not correct 
     if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
     //if everything is right: sign for the information 
     //the secret are the secret string variables 
-    const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, secret, { expiresIn: "1h" });
-
-    res.status(200).json({ result: existingUser, token });
+    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, { expiresIn: "1h" });
+    res.status(200).json({ result: oldUser, token });
   } catch (err) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -35,10 +34,10 @@ export const signup = async (req, res) => {
 
   try {
     //find exiting users, avoding dupicate account 
-    const existingUser = await UserModal.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "User already exists" });
+    const oldUser = await UserModal.findOne({ email });
 
-    if (password != confirmPassword) return res.status(400).json({ message: "Password don't match" });
+    if (oldUser) return res.status(400).json({ message: "User already exists" });
+
 
     //the second paramter is the level complexity for hashing
     const hashedPassword = await bcrypt.hash(password, 12);

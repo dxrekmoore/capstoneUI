@@ -6,22 +6,19 @@ import jwt from "jsonwebtoken";
 const secret = 'soundMapper';
 
 const auth = async (req, res, next) => {
-
   try {
     const token = req.headers.authorization.split(" ")[1];
-    //decide if the token is google or the customer authentication
     const isCustomAuth = token.length < 500;
 
     let decodedData;
 
-    //secret is only for customer authentication
     if (token && isCustomAuth) {      
       decodedData = jwt.verify(token, secret);
 
       req.userId = decodedData?.id;
     } else {
       decodedData = jwt.decode(token);
-    //sub is the google id being differtiated
+
       req.userId = decodedData?.sub;
     }    
 

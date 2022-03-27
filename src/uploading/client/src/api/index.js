@@ -1,9 +1,7 @@
-//apid functions are related to the actions/posts.js
-
+//api functions are related to the actions/posts.js
 
 //make api calls 
 import axios from 'axios';
-
 
 //specify your url -- pointing to the backend 
 const API = axios.create({ baseURL: 'http://localhost:5000' });
@@ -16,7 +14,6 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-//error function 
 export const fetchPosts = () => API.get('/posts');
 export const createPost = (newPost) => API.post('/posts', newPost);
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);

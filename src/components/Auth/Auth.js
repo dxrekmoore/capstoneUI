@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Avatar, Button, Paper, Grid, Typography, Container, TextField } from '@material-ui/core';
+import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import { signin, signup } from '../../uploading/client/src/actions/auth';
-
+import { AUTH } from '../../uploading/client/src/constants/actionTypes';
 import useStyles from './styles';
 import Input from './Input';
 import Icon from './icon';
@@ -45,7 +45,7 @@ const Auth = () => {
         const token = res?.tokenId;
 
         try {
-            dispatch({ type: 'AUTH', data: { result, token } });
+            dispatch({ type: AUTH, data: { result, token } });
             history.push('/');
           } catch (error) {
             console.log(error);
