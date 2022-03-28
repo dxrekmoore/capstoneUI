@@ -4,19 +4,23 @@ import MicRecorder from 'mic-recorder-to-mp3';
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
-function success(pos){
-    var crd = pos.coords;
-    console.log('Your current position is:');
-    var latitude = crd.latitude;
-    var longitude = crd.longitude;
-    console.log(latitude);
-    console.log(longitude);
-  }
-function error(err){
-    console.log(error);
-}
+var lat;
+var long;
+var mp3file;
 
-  
+function success(pos){
+  var crd = pos.coords;
+  lat = crd.latitude;
+  long = crd.longitude;
+}
+function error(err){
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+if (window.navigator.geolocation) { //get location on recording start
+  window.navigator.geolocation
+  .getCurrentPosition(success, error);
+ } 
+
 class Record extends React.Component {
   constructor(props){
     super(props);
@@ -26,15 +30,12 @@ class Record extends React.Component {
       isBlocked: false,
     };
   }
-
+  
   start = () => {
-    if (window.navigator.geolocation) {
-      window.navigator.geolocation
-      .getCurrentPosition(success, error);
-     } 
-    if (this.state.isBlocked) {
+
+    if (this.state.isBlocked) { //mic not enabled
       console.log('Permission Denied');
-    } else {
+    } else { //start recording
       Mp3Recorder
         .start()
         .then(() => {
@@ -42,29 +43,37 @@ class Record extends React.Component {
         }).catch((e) => console.error(e));
     }
   };
+  
 
-  stop = () => {
+  stop = () => { //stop recording clicked
     Mp3Recorder
       .stop()
       .getMp3()
       .then(([buffer, blob]) => {
-        const blobURL = URL.createObjectURL(blob)
+        const blobURL = URL.createObjectURL(blob);
+        mp3file = new File([blob], "audiofile.mp3");
         this.setState({ blobURL, isRecording: false });
+
+        console.log(mp3file);
+        console.log("lat: " + lat);
+        console.log("long: " + long);
+        
       }).catch((e) => console.log(e));
   };
-
+  
   componentDidMount() {
     navigator.getUserMedia({ audio: true },
       () => {
         console.log('Permission Granted');
         this.setState({ isBlocked: false });
       },
-      () => {
+      () => { 
         console.log('Permission Denied');
         this.setState({ isBlocked: true })
       },
     );
   }
+
 
   render(){
     return (
