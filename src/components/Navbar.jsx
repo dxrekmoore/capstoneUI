@@ -40,7 +40,7 @@ const NavBar = () =>{
         <div className="logo">SoundScape Mapper</div>
         <ul className="nav-links">
           <input type="checkbox" id="checkbox_toggle" />
-          <label htmlFgior="checkbox_toggle" className="hamburger">&#9776;</label>
+          <label htmlFor="checkbox_toggle" className="hamburger">&#9776;</label>
           <div className="menu">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/upload">Upload</Link></li>
