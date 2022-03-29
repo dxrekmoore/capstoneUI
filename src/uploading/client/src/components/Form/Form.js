@@ -72,8 +72,9 @@ const Form = ({ currentId, setCurrentId }) => {
 
   //these are the input fields shows in the app.js, changing of these should also make corresponded change on Posts/Post/Post.js
   return (
+    
     <Paper className={classes.paper}>
-      <Record/>
+     
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? `Modifying "${post.title}" Recording` : 'Upload a Recording'}</Typography>
         
@@ -152,6 +153,7 @@ const Form = ({ currentId, setCurrentId }) => {
       </form>
       
     </Paper>
+    
   );
 };
 
