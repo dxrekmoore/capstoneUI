@@ -19,8 +19,8 @@ app.use('/api/posts', postRoutes);
 app.use('/user', userRoutes);
 
 //connecting to the mongodb, with name dev_user1, and password dev_user1
-//const CONNECTION_URL = 'mongodb+srv://dev_user1:dev_user1@cluster0.tl0um.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-const CONNECTION_URL = 'mongodb+srv//127.0.0.1:27017/soundmapper?retryWrites=true&w=majority'
+const CONNECTION_URL = 'mongodb+srv://dev_user1:dev_user1@cluster0.tl0um.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+//const CONNECTION_URL = 'mongodb+srv//127.0.0.1:27017/soundmapper?retryWrites=true&w=majority'
 const PORT = process.env.PORT|| 5000;
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
