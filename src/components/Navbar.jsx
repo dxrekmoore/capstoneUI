@@ -44,7 +44,6 @@ const NavBar = () =>{
           <div className="menu">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/upload">Upload</Link></li>
-            <li><Link to="/contact">Contact Us</Link></li>
             <div >
               {user?.result ? (
                 <div className={classes.profile}>
