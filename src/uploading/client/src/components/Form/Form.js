@@ -73,6 +73,7 @@ const Form = ({ currentId, setCurrentId }) => {
   //these are the input fields shows in the app.js, changing of these should also make corresponded change on Posts/Post/Post.js
   return (
     <Paper className={classes.paper}>
+      <Record/>
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? `Modifying "${post.title}" Recording` : 'Upload a Recording'}</Typography>
         
@@ -138,7 +139,7 @@ const Form = ({ currentId, setCurrentId }) => {
           fullWidth value={postData.decibel} 
           onChange={(e) => setPostData({ ...postData, decibel: e.target.value })} 
         />
-        <Record/>
+        
         <div className={classes.fileInput}>
             <FileBase 
                 type="file" 
@@ -149,6 +150,7 @@ const Form = ({ currentId, setCurrentId }) => {
         <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
       </form>
+      
     </Paper>
   );
 };
