@@ -5,7 +5,7 @@ import Contact from './pages/home';
 import Uploading from './uploading/client/src/App';
 import Auth from './components/Auth/Auth';
 import NavBar from './components/Navbar';
-import Home from './components/Home/Basemap';
+import Home from './components/Map/Basemap';
 function App() { 
   return (
     <>
