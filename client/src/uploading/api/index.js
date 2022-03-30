@@ -5,9 +5,9 @@ import axios from 'axios';
 
 //specify your url -- pointing to the backend 
 //server code
-//const API = axios.create({ baseURL: 'http://localhost:5000/api/' });
+const API = axios.create({ baseURL: 'http://cygnus.ece.queensu.ca/api/' });
 //localhost code
-const API = axios.create({ baseURL: 'http://localhost:5000/' });
+//const API = axios.create({ baseURL: 'http://localhost:5000/' });
 API.interceptors.request.use((req) => {
   if (localStorage.getItem('profile')) {
     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
