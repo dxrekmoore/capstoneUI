@@ -6,8 +6,8 @@ const postSchema = mongoose.Schema({
     creator: String,
     name: String,
     location: String,
-    lat: String,
-    lon: String,
+    latitude: String,
+    longitude: String,
     message: String,
     environment: [String], //array of strings
     phone_type: String,

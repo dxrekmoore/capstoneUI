@@ -3,7 +3,7 @@ this page will set the form for the input fields
 */
 import * as React from "react";
 import { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper } from '@material-ui/core';
+import { TextField, Button, Typography, Paper, Divider } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import FileBase from 'react-file-base64';
 import { Accordion, AccordionActions, AccordionDetails,AccordionSummary } from '@mui/material';
@@ -12,33 +12,94 @@ import Geocodio from 'geocodio-library-node';
 
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
-import Record from '../Record/record'
+import Record, {mp3file, lat, long} from '../Record/record'
 
-
-
-
-
+var audioFile = mp3file;
+var base64Audio = '';
+var expLat;
+var expLng;
 
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [postData, setPostData] = useState({ location: '', lat: '', lon: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
+  const [postData, setPostData] = useState({ location: '', latitude: '', longitude: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   //if we try to update the post, make sure teh updated post information will be shown in the input filed, so we can change from the old materials
   const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
 
+  const [isLocation, setIsLocation] = useState(true);
+
+  
   const geocoder = new Geocodio('2e2d299326224a225d9e64239d982e522394569');
-  const geocoding = () => {
-      geocoder.geocode("1109 N Highland St, Arlington VA")
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
+  //geocoding the location from the address to latitude and longitude 
+
+  const geocodLatLng = (address) => {
+    geocoder.geocode(address)
+    .then(response => {
+      setPostData({ ...postData, latitude: response.results[0].location.lat ,longitude: response.results[0].location.lng });
+    })
+    .catch(err => {
         console.error(err);
       }
     );
   };
+
+  //converse addre -> lat and lng 
+  const handleTranLatLon = () => {
+    var addr = postData.location;
+    var address = addr + ',Kingston, ON, CANADA'
+    setIsLocation(false);
+    geocodLatLng(address);
+  }
+
+  const geoReverse = (latitude, longitude) => {
+    const coor = latitude + ',' + longitude;
+    geocoder.reverse(coor, [], 1)
+    .then(response => {
+      setPostData({ ...postData, location: response.results[0].formatted_address });
+    })
+    .catch(err => {
+      console.error(err);
+    }
+  );
+  }
+
+  const handleTranAddress = () => {
+    var lat = postData.latitude;
+    var lng = postData.longitude;
+    geoReverse(lat,lng);
+    handleTranLatLon();
+  }
+
+  //convert audio to base64
+  const getBase64 = (file) => {
+    return new Promise(resolve => {
+      let fileInfo;
+      let baseURL = "";
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        baseURL = reader.result;
+        resolve(baseURL);
+
+      setPostData({ ...postData, selectedFile: baseURL }) 
+      };  
+    });
+  };
+
+  //save recording 
+  const saveFile = () => {
+    expLat = lat;
+    expLng = long;
+    setPostData({ ...postData, latitude: lat, longitude: long })
+    audioFile = mp3file;
+    getBase64(audioFile);
+
+  };
+
+
 
   useEffect(() => {
     if (post) setPostData(post);
@@ -46,12 +107,11 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const clear = () => {
     setCurrentId(0);
-    setPostData({ location: '', lat: '', lon: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
+    setPostData({ location: '', latitude: '', longitude: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     //if current Id is not null, then dispatch a update post 
     //otherwise if id is null, then we must be creating a post
     if (currentId === null || currentId === 0) {
@@ -78,66 +138,50 @@ const Form = ({ currentId, setCurrentId }) => {
     <Paper className={classes.paper}>
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? `Modifying "${post.title}" Recording` : 'Upload a Recording'}</Typography>
-        
         <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
-        >
-          <TextField 
-          //disabled
-          name="location" 
-          variant="outlined" 
-          label="location" 
-          fullWidth 
+        > 
+
+        <TextField 
+          name="location" variant="outlined" label="Location" fullWidth 
           value={postData.location} 
           onChange={(e) => setPostData({ ...postData, location: e.target.value })}
-        />
+        /> 
         </AccordionSummary>
         <AccordionDetails>
         <TextField 
-            //required
-            variant="outlined"
-            label="latitude"
-            fullWidth
-            value={postData.lat} 
-            onChange={(e) => setPostData({ ...postData, lat: e.target.value })}
+            variant="outlined" 
+            label="latitude" fullWidth
+            value={postData.latitude} 
+            onChange={(e) => setPostData({ ...postData, latitude: e.target.value })}
           />
+
           <TextField 
             //required
-            variant="outlined"
-            label="longtitude"
-            fullWidth
-            value={postData.lon} 
-            onChange={(e) => setPostData({ ...postData, lon: e.target.value })}
+            variant="outlined" 
+            label="longtitude" fullWidth
+            value={postData.longitude} 
+            onChange={(e) => setPostData({ ...postData, longitude: e.target.value })}
           />
         </AccordionDetails>
       </Accordion>
 
+
+        <Button variant="contained" color="secondary" size="small" onClick={handleTranAddress} fullWidth>Geocode</Button>
+        
         <TextField 
-          name="message" 
-          variant="outlined" 
-          label="Additional Information" 
-          fullWidth 
-          multiline 
-          rows={4} 
-          value={postData.message} 
+          name="message" variant="outlined" label="Additional Information" fullWidth multiline rows={4} value={postData.message} 
           onChange={(e) => setPostData({ ...postData, message: e.target.value })}
         />
         <TextField 
-          name="environment" 
-          variant="outlined" 
-          label="Environment (indoor/outdoor)" 
-          fullWidth 
-          value={postData.environment} 
+          name="environment" variant="outlined"  label="Environment (indoor/outdoor)" fullWidth value={postData.environment} 
           onChange={(e) => setPostData({ ...postData, environment: e.target.value.split(',') })} 
         />
         <TextField 
-          name="phone_type" 
-          variant="outlined" 
-          label="Phone type" 
-          fullWidth value={postData.phone_type} 
+          name="phone_type" variant="outlined" label="Phone type" fullWidth value={postData.phone_type} 
           onChange={(e) => setPostData({ ...postData, phone_type: e.target.value })} 
         />
         <TextField 
@@ -156,12 +200,20 @@ const Form = ({ currentId, setCurrentId }) => {
         </div>
         
 
-
         <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
       </form>
+
+      <div className={classes.recording}>
+      <Record/>
+
+      <Button variant="contained" color="secondary" size="small" onClick={saveFile} fullWidth>Save Audio</Button>
+      </div>
+      
     </Paper>
+    
   );
+  
 };
 
 export default Form;
