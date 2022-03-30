@@ -16,7 +16,7 @@ app.use(cors());
 
 //every routes inside posts will start posts, so it changes reaction path to localhost:5000/posts
 app.use('/api/posts', postRoutes);
-app.use('/user', userRoutes);
+app.use('/api/user', userRoutes);
 
 //connecting to the mongodb, with name dev_user1, and password dev_user1
 const CONNECTION_URL = 'mongodb+srv://dev_user1:dev_user1@cluster0.tl0um.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
