@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 //specify your url -- pointing to the backend 
-const url = 'http://localhost:5000/posts';
+const url = 'http://cygnus.ece.queensu.ca/api/posts';
 
 //error function 
 export const fetchPosts = () => axios.get(url);
