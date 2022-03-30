@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper} from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import FileBase from 'react-file-base64';
-import { Accordion, AccordionDetails,AccordionSummary } from '@mui/material';
+import { Accordion, AccordionDetails,AccordionSummary,Grid, grid } from '@mui/material';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Geocodio from 'geocodio-library-node';
 
@@ -72,11 +72,9 @@ const Form = ({ currentId, setCurrentId }) => {
       let baseURL = "";
       let reader = new FileReader();
       reader.readAsDataURL(file);
-
       reader.onload = () => {
         baseURL = reader.result;
         resolve(baseURL);
-
       setPostData({ ...postData, selectedFile: baseURL }) 
       };  
     });
@@ -84,11 +82,15 @@ const Form = ({ currentId, setCurrentId }) => {
 
   //get location when you recording
   const setLocation = () => {
-      setPostData({ ...postData, latitude: lat, longitude: long }); 
+      const lati = lat+'';
+      const longi = long+'';
+      console.log(longi);
+      setPostData({ ...postData, latitude: lati, longitude: longi }); 
+      console.log(postData.latitude);
   }
+
   //save recording 
   const saveFile = () => {
-    setLocation();
     audioFile = mp3file;
     getBase64(audioFile);
   };
@@ -197,7 +199,15 @@ const Form = ({ currentId, setCurrentId }) => {
       <div className={classes.recording}>
       <Record/>
 
-      <Button variant="contained" color="secondary" size="small" onClick={saveFile} fullWidth>Save Audio</Button>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Button variant="contained" color="secondary" size="small" onClick={saveFile} fullWidth>Save Audio</Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="contained" color="primary" size="small" onClick={setLocation} fullWidth>Get Location</Button> 
+        </Grid>
+      </Grid>
+      
       </div>
       
     </Paper>
