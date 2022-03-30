@@ -16,11 +16,11 @@ app.use(cors());
 
 //every routes inside posts will start posts, so it changes reaction path to localhost:5000/posts
 //cyguns server code 
-//app.use('/api/posts', postRoutes);
-//app.use('/api/user', postRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/user', postRoutes);
 //localhost code 
-app.use('/posts', postRoutes);
-app.use('/user', userRoutes);
+//app.use('/posts', postRoutes);
+//app.use('/user', userRoutes);
 
 //connecting to the mongodb, with name dev_user1, and password dev_user1
 const CONNECTION_URL = 'mongodb+srv://dev_user1:dev_user1@cluster0.tl0um.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
