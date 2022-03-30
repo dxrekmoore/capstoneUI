@@ -15,7 +15,10 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors());
 
 //every routes inside posts will start posts, so it changes reaction path to localhost:5000/posts
+//cyguns server code 
 //app.use('/api/posts', postRoutes);
+//app.use('/api/user', postRoutes);
+//localhost code 
 app.use('/posts', postRoutes);
 app.use('/user', userRoutes);
 

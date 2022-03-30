@@ -3,10 +3,10 @@ this page will set the form for the input fields
 */
 import * as React from "react";
 import { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper, Divider } from '@material-ui/core';
+import { TextField, Button, Typography, Paper} from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import FileBase from 'react-file-base64';
-import { Accordion, AccordionActions, AccordionDetails,AccordionSummary } from '@mui/material';
+import { Accordion, AccordionDetails,AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Geocodio from 'geocodio-library-node';
 
@@ -14,22 +14,17 @@ import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 import Record, {mp3file, lat, long} from '../Record/record'
 
-var audioFile = mp3file;
-var base64Audio = '';
-var expLat;
-var expLng;
 
 
 const Form = ({ currentId, setCurrentId }) => {
+  var audioFile = mp3file;
+
   const [postData, setPostData] = useState({ location: '', latitude: '', longitude: '', message: '', environment: '', phone_type: '', decibel: '' , selectedFile: ''});
   //if we try to update the post, make sure teh updated post information will be shown in the input filed, so we can change from the old materials
   const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
-
-  const [isLocation, setIsLocation] = useState(true);
-
   
   const geocoder = new Geocodio('2e2d299326224a225d9e64239d982e522394569');
   //geocoding the location from the address to latitude and longitude 
@@ -45,11 +40,10 @@ const Form = ({ currentId, setCurrentId }) => {
     );
   };
 
-  //converse addre -> lat and lng 
+  //converse address -> lat and lng 
   const handleTranLatLon = () => {
     var addr = postData.location;
     var address = addr + ',Kingston, ON, CANADA'
-    setIsLocation(false);
     geocodLatLng(address);
   }
 
@@ -66,16 +60,15 @@ const Form = ({ currentId, setCurrentId }) => {
   }
 
   const handleTranAddress = () => {
-    var lat = postData.latitude;
-    var lng = postData.longitude;
-    geoReverse(lat,lng);
+    var lati = postData.latitude;
+    var lngi = postData.longitude;
+    geoReverse(lati,lngi);
     handleTranLatLon();
   }
 
   //convert audio to base64
   const getBase64 = (file) => {
     return new Promise(resolve => {
-      let fileInfo;
       let baseURL = "";
       let reader = new FileReader();
       reader.readAsDataURL(file);
@@ -89,14 +82,15 @@ const Form = ({ currentId, setCurrentId }) => {
     });
   };
 
+  //get location when you recording
+  const setLocation = () => {
+      setPostData({ ...postData, latitude: lat, longitude: long }); 
+  }
   //save recording 
   const saveFile = () => {
-    expLat = lat;
-    expLng = long;
-    setPostData({ ...postData, latitude: lat, longitude: long })
+    setLocation();
     audioFile = mp3file;
     getBase64(audioFile);
-
   };
 
 
@@ -123,6 +117,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }
   };
 
+  //user must be logged in to submit the form
   if (!user?.result?.name) {
     return (
       <Paper className={classes.paper}>
@@ -153,9 +148,7 @@ const Form = ({ currentId, setCurrentId }) => {
         </AccordionSummary>
         <AccordionDetails>
         <TextField 
-            variant="outlined" 
-            label="latitude" fullWidth
-            value={postData.latitude} 
+            variant="outlined" label="latitude" fullWidth value={postData.latitude} 
             onChange={(e) => setPostData({ ...postData, latitude: e.target.value })}
           />
 
@@ -185,10 +178,7 @@ const Form = ({ currentId, setCurrentId }) => {
           onChange={(e) => setPostData({ ...postData, phone_type: e.target.value })} 
         />
         <TextField 
-          name="decibel" 
-          variant="outlined" 
-          label="Decibel Value" 
-          fullWidth value={postData.decibel} 
+          name="decibel" variant="outlined" label="Decibel Value" fullWidth value={postData.decibel} 
           onChange={(e) => setPostData({ ...postData, decibel: e.target.value })} 
         />
         <div className={classes.fileInput}>

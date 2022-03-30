@@ -1,7 +1,6 @@
 /*a reducer is a function, that accpets states or actions in the website, 
 and it can do the corresponded actions */
 
-
 //add more actions here
 export default (posts = [], action) => {
   switch (action.type) {

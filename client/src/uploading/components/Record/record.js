@@ -4,14 +4,9 @@ import MicRecorder from 'mic-recorder-to-mp3';
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
-//export const lat =  0;
-//export const long =  0;
-//export const mp3file =  0;
 export var lat;
 export var long;
 export var mp3file;
-
-//export const newVar = mp3file;
 
 navigator.getUserMedia =  navigator.getUserMedia ||
 navigator.webkitGetUserMedia ||
@@ -94,15 +89,6 @@ class Record extends React.Component {
         const blobURL = URL.createObjectURL(blob);
         mp3file = new File([blob], "audiofile.mp3");
         this.setState({ blobURL, isRecording: false });
-
-        console.log('mp3file');
-        console.log(mp3file);
-
-        console.log("lat: " + lat);
-        console.log("long: " + long);
-        
-
-        
       }).catch((e) => console.log(e));
   };
   

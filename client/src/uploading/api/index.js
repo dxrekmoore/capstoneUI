@@ -4,7 +4,9 @@
 import axios from 'axios';
 
 //specify your url -- pointing to the backend 
+//server code
 //const API = axios.create({ baseURL: 'http://localhost:5000/api/' });
+//localhost code
 const API = axios.create({ baseURL: 'http://localhost:5000/' });
 API.interceptors.request.use((req) => {
   if (localStorage.getItem('profile')) {

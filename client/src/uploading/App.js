@@ -1,6 +1,6 @@
 /*this will be the base app interface,
 to run this, type command npm start in the client folder terminal*/
-import { Container, AppBar, Typography, Grow, Grid } from '@material-ui/core';
+import { Container, AppBar, Grow, Grid } from '@material-ui/core';
 
 //use hook, which makes redux easier, this allows us to dispatch an action 
 import { useDispatch } from 'react-redux';
