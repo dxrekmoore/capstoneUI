@@ -93,7 +93,9 @@ const Form = ({ currentId, setCurrentId }) => {
   const saveFile = () => {
     expLat = lat;
     expLng = long;
-    setPostData({ ...postData, latitude: lat, longitude: long })
+    console.log(expLat);
+    setPostData({ ...postData, latitude: expLat, longitude: expLng })
+    console.log("posted");
     audioFile = mp3file;
     getBase64(audioFile);
 
@@ -170,7 +172,7 @@ const Form = ({ currentId, setCurrentId }) => {
       </Accordion>
 
 
-        <Button variant="contained" color="secondary" size="small" onClick={handleTranAddress} fullWidth>Geocode</Button>
+        <Button variant="contained" color="secondary" size="small" onClick={handleTranAddress} fullWidth>Save Location</Button>
         
         <TextField 
           name="message" variant="outlined" label="Additional Information" fullWidth multiline rows={4} value={postData.message} 
@@ -184,13 +186,7 @@ const Form = ({ currentId, setCurrentId }) => {
           name="phone_type" variant="outlined" label="Phone type" fullWidth value={postData.phone_type} 
           onChange={(e) => setPostData({ ...postData, phone_type: e.target.value })} 
         />
-        <TextField 
-          name="decibel" 
-          variant="outlined" 
-          label="Decibel Value" 
-          fullWidth value={postData.decibel} 
-          onChange={(e) => setPostData({ ...postData, decibel: e.target.value })} 
-        />
+
         <div className={classes.fileInput}>
             <FileBase 
                 type="file" 

@@ -60,7 +60,8 @@
         "id": 10,
         "longitude": -76.489,
         "latitude": 44.24,
-        "random": 0
+        "random": 0,
+        "intensity": 100
       },
       {
         "intensity": 5,
