@@ -143,21 +143,20 @@ const Form = ({ currentId, setCurrentId }) => {
         > 
 
         <TextField 
-          name="location" variant="outlined" label="Location" fullWidth 
+          name="location" variant="outlined" label="Address" fullWidth 
           value={postData.location} 
           onChange={(e) => setPostData({ ...postData, location: e.target.value })}
         /> 
         </AccordionSummary>
         <AccordionDetails>
         <TextField 
-            variant="outlined" label="latitude" fullWidth value={postData.latitude} 
+            variant="outlined" label="Latitude" fullWidth value={postData.latitude} 
             onChange={(e) => setPostData({ ...postData, latitude: e.target.value })}
           />
 
           <TextField 
             //required
-            variant="outlined" 
-            label="longtitude" fullWidth
+            variant="outlined" label="Longtitude" fullWidth
             value={postData.longitude} 
             onChange={(e) => setPostData({ ...postData, longitude: e.target.value })}
           />
@@ -165,24 +164,22 @@ const Form = ({ currentId, setCurrentId }) => {
       </Accordion>
 
 
-        <Button variant="contained" color="secondary" size="small" onClick={handleTranAddress} fullWidth>Geocode</Button>
+        <Button variant="contained" color="secondary" size="small" onClick={handleTranAddress} fullWidth>Convert address</Button>
         
-        <TextField 
-          name="message" variant="outlined" label="Additional Information" fullWidth multiline rows={4} value={postData.message} 
-          onChange={(e) => setPostData({ ...postData, message: e.target.value })}
-        />
+        
         <TextField 
           name="environment" variant="outlined"  label="Environment (indoor/outdoor)" fullWidth value={postData.environment} 
           onChange={(e) => setPostData({ ...postData, environment: e.target.value.split(',') })} 
         />
         <TextField 
-          name="phone_type" variant="outlined" label="Phone type" fullWidth value={postData.phone_type} 
+          name="phone_type" variant="outlined" label="Device type" fullWidth value={postData.phone_type} 
           onChange={(e) => setPostData({ ...postData, phone_type: e.target.value })} 
         />
         <TextField 
-          name="decibel" variant="outlined" label="Decibel Value" fullWidth value={postData.decibel} 
-          onChange={(e) => setPostData({ ...postData, decibel: e.target.value })} 
+          name="message" variant="outlined" label="Additional Information" fullWidth multiline rows={1} value={postData.message} 
+          onChange={(e) => setPostData({ ...postData, message: e.target.value })}
         />
+
         <div className={classes.fileInput}>
             <FileBase 
                 type="file" 
